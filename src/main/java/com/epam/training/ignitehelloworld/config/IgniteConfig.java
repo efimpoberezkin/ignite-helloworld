@@ -1,6 +1,7 @@
 package com.epam.training.ignitehelloworld.config;
 
-import org.apache.ignite.IgniteSpringBean;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.discovery.DiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
@@ -48,9 +49,7 @@ public class IgniteConfig {
     }
 
     @Bean
-    public IgniteSpringBean ignite() {
-        IgniteSpringBean ignite = new IgniteSpringBean();
-        ignite.setConfiguration(igniteConfiguration());
-        return ignite;
+    public Ignite ignite() {
+        return Ignition.start(igniteConfiguration());
     }
 }
