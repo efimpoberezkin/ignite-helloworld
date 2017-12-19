@@ -1,12 +1,14 @@
 package com.epam.training.ignitehelloworld.config;
 
 import org.apache.ignite.Ignite;
-import org.apache.ignite.Ignition;
+import org.apache.ignite.IgniteCheckedException;
+import org.apache.ignite.IgniteSpring;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.discovery.DiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.TcpDiscoveryIpFinder;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,7 +51,7 @@ public class IgniteConfig {
     }
 
     @Bean
-    public Ignite ignite() {
-        return Ignition.start(igniteConfiguration());
+    public Ignite ignite(IgniteConfiguration igniteConfig, ApplicationContext context) throws IgniteCheckedException {
+        return IgniteSpring.start(igniteConfig, context);
     }
 }
