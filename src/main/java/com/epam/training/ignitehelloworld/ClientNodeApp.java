@@ -1,13 +1,11 @@
 package com.epam.training.ignitehelloworld;
 
+import com.epam.training.ignitehelloworld.logic.HelloRunnable;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteException;
-import org.apache.ignite.IgniteLogger;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.lang.IgniteRunnable;
-import org.apache.ignite.resources.LoggerResource;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
 
@@ -18,29 +16,17 @@ import java.util.Collections;
  */
 public class ClientNodeApp {
 
+    private static final String CACHE_NAME = "helloWorldCache";
+
     public static void main(String[] args) {
         Ignite ignite = Ignition.start(configuration());
 
-        IgniteCache<Integer, String> cache = ignite.getOrCreateCache("helloWorldCache");
+        IgniteCache<Integer, String> cache = ignite.getOrCreateCache(CACHE_NAME);
 
         cache.put(1, "Hello");
         cache.put(2, "World!");
 
-        ignite.compute().broadcast(
-                new IgniteRunnable() {
-
-                    @LoggerResource
-                    private transient IgniteLogger log;
-
-                    @Override
-                    public void run() {
-                        String hello = cache.get(1);
-                        String world = cache.get(2);
-
-                        log.info(hello + " " + world);
-                    }
-                }
-        );
+        ignite.compute().broadcast(new HelloRunnable(CACHE_NAME));
     }
 
     private static IgniteConfiguration configuration() throws IgniteException {
