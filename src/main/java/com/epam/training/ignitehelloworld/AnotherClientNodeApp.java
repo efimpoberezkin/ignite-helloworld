@@ -6,7 +6,7 @@ import org.apache.ignite.Ignition;
 /**
  * Trying out xml based Ignite configuration
  */
-public class AnotherServerNodeApp {
+public class AnotherClientNodeApp {
 
     public static void main(String[] args) {
         Ignite ignite = Ignition.start("spring-context.xml");
