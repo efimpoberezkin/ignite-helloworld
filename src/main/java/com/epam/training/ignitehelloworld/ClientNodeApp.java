@@ -3,13 +3,13 @@ package com.epam.training.ignitehelloworld;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteException;
+import org.apache.ignite.IgniteLogger;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.lang.IgniteRunnable;
 import org.apache.ignite.resources.LoggerResource;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
-import org.apache.log4j.Logger;
 
 import java.util.Collections;
 
@@ -17,9 +17,6 @@ import java.util.Collections;
  * Trying out plain Java Ignite configuration
  */
 public class ClientNodeApp {
-
-    @LoggerResource
-    private static final Logger log = Logger.getRootLogger();
 
     public static void main(String[] args) {
         Ignite ignite = Ignition.start(configuration());
@@ -29,10 +26,12 @@ public class ClientNodeApp {
         cache.put(1, "Hello");
         cache.put(2, "World!");
 
-        log.info("Filled cache with values");
-
         ignite.compute().broadcast(
                 new IgniteRunnable() {
+
+                    @LoggerResource
+                    private transient IgniteLogger log;
+
                     @Override
                     public void run() {
                         String hello = cache.get(1);
