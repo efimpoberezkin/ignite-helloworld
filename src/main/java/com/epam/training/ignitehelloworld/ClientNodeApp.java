@@ -5,6 +5,7 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
+import org.apache.ignite.lang.IgniteRunnable;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
 
@@ -23,12 +24,17 @@ public class ClientNodeApp {
         cache.put(1, "Hello");
         cache.put(2, "World!");
 
-        ignite.compute().broadcast(() -> {
-            String hello = cache.get(1);
-            String world = cache.get(2);
+        ignite.compute().broadcast(
+                new IgniteRunnable() {
+                    @Override
+                    public void run() {
+                        String hello = cache.get(1);
+                        String world = cache.get(2);
 
-            System.out.println(hello + " " + world);
-        });
+                        System.out.println(hello + " " + world);
+                    }
+                }
+        );
     }
 
     private static IgniteConfiguration configuration() throws IgniteException {
