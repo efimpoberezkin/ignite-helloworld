@@ -15,12 +15,12 @@ import javax.cache.Cache;
 public class SumServiceImpl implements Service, SumService {
 
     @IgniteInstanceResource
-    private Ignite ignite;
+    private transient Ignite ignite;
 
     @LoggerResource
     private transient IgniteLogger log;
 
-    @SpringResource(resourceName = "addition-component")
+    @SpringResource(resourceClass = AdditionComponent.class)
     private transient AdditionComponent additionComponent;
 
     private transient IgniteCache<Integer, Integer> cache;

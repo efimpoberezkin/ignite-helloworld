@@ -2,7 +2,7 @@ package com.epam.training.ignitehelloworld.config;
 
 import org.springframework.stereotype.Component;
 
-@Component(value = "addition-component")
+@Component
 public class AdditionComponent {
 
     public int add(int a, int b) {

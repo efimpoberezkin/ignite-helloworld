@@ -14,10 +14,10 @@ import static java.lang.Thread.sleep;
 public class CacheFiller implements IgniteRunnable {
 
     @IgniteInstanceResource
-    private Ignite ignite;
+    private transient Ignite ignite;
 
     @LoggerResource
-    private IgniteLogger log;
+    private transient IgniteLogger log;
 
     private String cacheName;
 
